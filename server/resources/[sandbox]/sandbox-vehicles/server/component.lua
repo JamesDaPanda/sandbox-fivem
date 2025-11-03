@@ -756,10 +756,15 @@ exports("OwnedSpawn", function(source, VIN, coords, heading, cb, extraData)
                 end
 
                 if vehicle.RegisteredPlate then
-                    if vehicle.FakePlate then
-                        vehState.Plate = vehicle.FakePlate
-                        vehState.FakePlate = vehicle.FakePlate
-                        SetVehicleNumberPlateText(spawnedVehicle, vehicle.FakePlate)
+                    if vehicle.FakePlate and vehicle.FakePlate ~= 0 then
+                        local fakePlateStr = vehicle.RegisteredPlate
+                        if vehicle.Properties and vehicle.Properties.FakePlate then
+                            fakePlateStr = vehicle.Properties.FakePlate
+                        end
+
+                        vehState.Plate = fakePlateStr
+                        vehState.FakePlate = fakePlateStr
+                        SetVehicleNumberPlateText(spawnedVehicle, fakePlateStr)
                     else
                         vehState.Plate = vehicle.RegisteredPlate
                         SetVehicleNumberPlateText(spawnedVehicle, vehicle.RegisteredPlate)

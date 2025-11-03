@@ -140,41 +140,41 @@ function RegisterItemUses()
 
 		if currentMeta then
 			exports["sandbox-base"]:ClientCallback(source, "Vehicles:GetFakePlateAddingVehicle", {}, function(veh)
-				print(veh)
 				if not veh then
 					return
 				end
 				veh = NetworkGetEntityFromNetworkId(veh)
-				print(veh)
 				if veh and DoesEntityExist(veh) then
-					print("Vehicle found")
 					local vehState = Entity(veh).state
-					print(vehState)
 					if not vehState.VIN then
 						return
 					end
 
 					local vehicle = exports['sandbox-vehicles']:OwnedGetActive(vehState.VIN)
-					print(vehicle)
 					if not vehicle then
 						return
 					end
 					if not vehicle:GetData("FakePlate") then
-						vehicle:SetData("FakePlate", currentMeta.Plate)
-						vehicle:SetData("FakePlateData", currentMeta)
+					    local currentProps = vehicle:GetData("Properties") or {}
 
-						SetVehicleNumberPlateText(veh, currentMeta.Plate)
-						vehState.FakePlate = currentMeta.Plate
-
-						exports['sandbox-vehicles']:OwnedForceSave(vehState.VIN)
-
-						exports.ox_inventory:RemoveSlot(slot.Owner, slot.Name, 1, slot.Slot,
-							slot.invType)
-
-						exports['sandbox-hud']:Notification(source, "success", "Fake Plate Installed")
+					    if not currentProps.FakePlate then
+					        currentProps.FakePlate = currentMeta.Plate
+					    end
+					
+					    vehicle:SetData("FakePlate", 1)
+					    vehicle:SetData("Properties", currentProps)
+					    vehicle:SetData("FakePlateData", currentMeta)
+					
+					    SetVehicleNumberPlateText(veh, currentMeta.Plate)
+					    vehState.FakePlate = currentMeta.Plate
+					
+					    exports['sandbox-vehicles']:OwnedForceSave(vehState.VIN)
+					
+					    exports.ox_inventory:RemoveSlot(slot.Owner, slot.Name, 1, slot.Slot, slot.invType)
+					
+					    exports['sandbox-hud']:Notification(source, "success", "Fake Plate Installed")
 					else
-						exports['sandbox-hud']:Notification(source, "error",
-							"A Fake Plate is Already Installed")
+					    exports['sandbox-hud']:Notification(source, "error", "A Fake Plate is Already Installed")
 					end
 				end
 			end)
