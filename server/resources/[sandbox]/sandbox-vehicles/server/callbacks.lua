@@ -173,7 +173,7 @@ function RegisterCallbacks()
                     end
                 
                     cb(vehicles, {
-                        current = Vehicles.Owned.Properties:GetCount(storageId),
+                        current = exports['sandbox-vehicles']:OwnedPropertiesGetCount(storageId),
                         max = maxParking or 0
                     }, characterId, dumbShit)
                 else
