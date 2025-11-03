@@ -1018,7 +1018,7 @@ end)
 
 function RegisterOXINVMiddleware()
     exports['sandbox-base']:MiddlewareAdd('Characters:Logout', function(source)
-        saveInventories(true)
+        Inventory.SaveInventories(false, true)
     end, 1)
 end
 
